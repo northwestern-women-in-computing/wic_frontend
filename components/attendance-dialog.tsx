@@ -193,10 +193,7 @@ export function AttendanceDialog({ children }: AttendanceDialogProps) {
                 <span className="font-medium">+{success.points} points earned</span>
               </div>
             </div>
-            <div className="space-y-2">
-              <Button onClick={resetForm} className="w-full">
-                Register Another Event
-              </Button>
+            <div className="space-y-4">
               <Link href="/dashboard" onClick={() => setIsOpen(false)}>
                 <Button variant="outline" className="w-full">
                   View Dashboard

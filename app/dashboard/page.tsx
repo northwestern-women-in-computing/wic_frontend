@@ -54,11 +54,14 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <Link href="/attendance">
-                  <Button className="w-full" variant="outline">
-                    Register Attendance
-                  </Button>
-                </Link>
+                <AttendanceDialog>
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                    >
+                      Attendance
+                    </Button>
+                  </AttendanceDialog>
                 <Link href="/calendar">
                   <Button className="w-full" variant="outline">
                     View Events
