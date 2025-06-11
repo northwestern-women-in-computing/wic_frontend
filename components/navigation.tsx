@@ -49,9 +49,20 @@ export function Navigation() {
     }
 
     checkAuth()
+    
+    const handleFocus = () => checkAuth()
+    window.addEventListener("focus", handleFocus)
+    
+
     window.addEventListener("storage", checkAuth)
-    return () => window.removeEventListener("storage", checkAuth)
-  }, [])
+   
+    checkAuth()
+    
+    return () => {
+      window.removeEventListener("storage", checkAuth)
+      window.removeEventListener("focus", handleFocus)
+    }
+  }, [pathname])
 
   const handleSignOut = () => {
     localStorage.removeItem("isSignedIn")
