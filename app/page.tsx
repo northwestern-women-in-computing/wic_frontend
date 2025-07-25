@@ -1,10 +1,54 @@
+"use client";
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, Code, Lightbulb, Network } from "lucide-react"
+import { useEffect, useState } from "react"
 
 export default function HomePage() {
+   // 1) state to hold the fetched events
+  const [upcomingEvents, setUpcomingEvents] = useState<any[]>([])
+
+  // 2) fetch + process
+  useEffect(() => {
+    async function loadEvents() {
+      const res = await fetch("http://localhost:5000/api/events")
+      if (!res.ok) return
+      const data = await res.json()
+
+      // Filter & sort like CalendarPage
+      const validStatuses = [
+        "done",
+        "cancelled",
+        "registration open",
+        "confirmed",
+      ]
+      const evs = data
+        .map((ev: any) => {
+          const [d, t] = ev.date.includes("T") 
+            ? ev.date.split("T") 
+            : [ev.date, "00:00"]
+          return { ...ev, date: d, time: t.slice(0,5) }
+        })
+        .filter((ev: any) =>
+          ev.id &&
+          ev.title &&
+          ev.date &&
+          ev.category &&
+          ev.location &&
+          ev.format &&
+          validStatuses.includes(ev.status?.toLowerCase() ?? "")
+        )
+        .sort((a: any, b: any) =>
+          new Date(`${a.date}T${a.time}:00`).getTime()
+          - new Date(`${b.date}T${b.time}:00`).getTime()
+        )
+      setUpcomingEvents(evs.slice(0, 3))
+    }
+    loadEvents()
+  }, [])
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
@@ -121,7 +165,9 @@ export default function HomePage() {
               <Button variant="outline">View All Events</Button>
             </Link>
           </div>
-          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+      {/* MOCK DATA*/}
+          {/* <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
@@ -172,7 +218,23 @@ export default function HomePage() {
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </div> */}
+          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {upcomingEvents.map(event => (
+              <Card key={event.id}>
+                <CardHeader>
+                  <CardTitle className="text-lg">{event.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription>{event.description}</CardDescription>
+                  <div className="mt-4 flex items-center text-sm text-muted-foreground">
+                    <Calendar className="mr-1 h-4 w-4" />
+                    {event.date} • {event.time} • {event.location}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div> 
         </div>
       </section>
 
