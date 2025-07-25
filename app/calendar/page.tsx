@@ -43,7 +43,6 @@ function formatDate(dateString: string) {
 
 function formatTime(dateTimeOrTime?: string) {
   if (!dateTimeOrTime) return ""
-  // If full ISO datetime is provided, parse directly; else treat as HH:MM
   const isoString = dateTimeOrTime.includes("T")
     ? dateTimeOrTime
     : `1970-01-01T${dateTimeOrTime}:00`
@@ -73,6 +72,8 @@ export default function CalendarPage() {
         const processed = data.map((ev: any) => {
           let dateOnly = ev.date
           let timeOnly = ev.time ?? ''
+          let status = ev.status ?? ''
+          console.log(ev.status)
 
           if (!timeOnly && typeof ev.date === 'string' && ev.date.includes('T')) {
             const [d, t] = ev.date.split('T')
@@ -84,10 +85,28 @@ export default function CalendarPage() {
             ...ev,
             date: dateOnly,
             time: timeOnly,
+            status: status.toLowerCase(),
           }
         })
 
-        setEvents(processed)
+        // Filter out any events missing required fields or with unwanted status
+        const validStatuses = [
+          'done',
+          'cancelled',
+          'registration open',
+          'confirmed',
+        ]
+        const filteredEvents = processed.filter((ev : any) =>
+          ev.id &&
+          ev.title &&
+          ev.date &&
+          ev.category &&
+          ev.location &&
+          ev.format &&
+          validStatuses.includes(ev.status)
+        );
+
+        setEvents(filteredEvents)
       } catch (err: any) {
         setError(err.message)
       } finally {
