@@ -1,3 +1,5 @@
+"use client"
+import { useEffect, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -5,85 +7,7 @@ import { Calendar, Clock, MapPin, Users } from "lucide-react"
 import { AttendanceDialog } from "@/components/attendance-dialog"
 
 // Mock events data - in real app, this would come from your database
-const events = [
-  {
-    id: 1,
-    title: "Tech Talk: Women Leaders in AI",
-    description:
-      "Join us for an inspiring talk with women leaders from top AI companies discussing their career journeys and the future of artificial intelligence.",
-    date: "2024-02-15",
-    time: "18:00",
-    location: "Tech Building Room 101",
-    points: 10,
-    attendees: 45,
-    maxAttendees: 60,
-    category: "Tech Talk",
-  },
-  {
-    id: 2,
-    title: "Coding Workshop: Web Development",
-    description: "Hands-on workshop covering HTML, CSS, and JavaScript fundamentals. Perfect for beginners!",
-    date: "2024-02-22",
-    time: "19:00",
-    location: "Computer Lab A",
-    points: 15,
-    attendees: 25,
-    maxAttendees: 30,
-    category: "Workshop",
-  },
-  {
-    id: 3,
-    title: "Networking Night with Industry Professionals",
-    description:
-      "Connect with alumni and industry professionals over dinner and meaningful conversations about career paths in tech.",
-    date: "2024-03-01",
-    time: "18:30",
-    location: "University Center",
-    points: 20,
-    attendees: 35,
-    maxAttendees: 50,
-    category: "Networking",
-  },
-  {
-    id: 4,
-    title: "Hackathon: Women in Tech Challenge",
-    description:
-      "24-hour hackathon focused on creating solutions that empower women in technology. Prizes and mentorship included!",
-    date: "2024-03-15",
-    time: "09:00",
-    location: "Innovation Hub",
-    points: 50,
-    attendees: 20,
-    maxAttendees: 40,
-    category: "Hackathon",
-  },
-  {
-    id: 5,
-    title: "Resume Review and Interview Prep",
-    description:
-      "Get your resume reviewed by industry professionals and practice technical interviews in a supportive environment.",
-    date: "2024-03-22",
-    time: "17:00",
-    location: "Career Services Center",
-    points: 10,
-    attendees: 15,
-    maxAttendees: 25,
-    category: "Career",
-  },
-  {
-    id: 6,
-    title: "Panel: Entrepreneurship in Tech",
-    description:
-      "Hear from successful women entrepreneurs about starting tech companies, securing funding, and building diverse teams.",
-    date: "2024-04-05",
-    time: "18:00",
-    location: "Auditorium B",
-    points: 15,
-    attendees: 30,
-    maxAttendees: 100,
-    category: "Panel",
-  },
-]
+// Remove the mock events array
 
 const categoryColors = {
   "Tech Talk": "bg-blue-100 text-blue-800",
@@ -116,6 +40,29 @@ function formatTime(timeString: string) {
 }
 
 export default function CalendarPage() {
+  const [events, setEvents] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    async function fetchEvents() {
+      try {
+        const res = await fetch("http://localhost:5000/api/events")
+        if (!res.ok) throw new Error("Failed to fetch events")
+        const data = await res.json()
+        setEvents(data)
+      } catch (err: any) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchEvents()
+  }, [])
+
+  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading events...</div>
+  if (error) return <div className="min-h-screen flex items-center justify-center text-red-500">{error}</div>
+
   return (
     <div className="min-h-screen bg-muted/50 py-8">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
