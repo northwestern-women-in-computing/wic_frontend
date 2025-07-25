@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import colors from "tailwindcss/colors"
 
 export default {
     darkMode: ["class"],
@@ -12,6 +13,7 @@ export default {
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
+			orange: colors.orange,
   			card: {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'
@@ -58,5 +60,10 @@ export default {
   		}
   	}
   },
+  safelist: [
+    {
+      pattern: /^(bg|text)-(red|green|blue|purple|yellow|orange)-(100|800)$/,
+    },
+  ],
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
