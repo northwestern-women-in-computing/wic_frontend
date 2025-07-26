@@ -75,6 +75,11 @@ export default function HomePage() {
                   View Events
                 </Button>
               </Link>
+              <Link href="/leaderboard">
+              <Button size="lg" variant="outline" className="bg-white text-purple-700 hover:bg-purple-50">
+                View Leaderboard
+              </Button>
+            </Link>
             </div>
           </div>
         </div>
