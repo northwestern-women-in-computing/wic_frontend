@@ -18,7 +18,7 @@ export default function LeaderboardPage() {
         try {
           data = JSON.parse(text);
         } catch {
-          throw new Error(`Unexpected non‑JSON response: ${text}`);
+          throw new Error(`Unexpected non-JSON response: ${text}`);
         }
         if (!res.ok) {
           // include status and any error message from the server
@@ -65,7 +65,7 @@ export default function LeaderboardPage() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-lg font-semibold">
-                    #{index + 1} {user.name}
+                    {index + 1}. {user.name}
                   </CardTitle>
                   <Badge variant="outline">{user.points} pts</Badge>
                 </div>
