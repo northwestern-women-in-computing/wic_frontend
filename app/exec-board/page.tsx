@@ -5,75 +5,75 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Mail, Linkedin, GraduationCap, BookOpen } from "lucide-react"
 
-// Mock exec board data - in real app, this would come from your database
-const execBoard = [{
+const execBoard = [
+    {
         id: 1,
-        name: "Laura Felix",
+        name: "Laura Saraiva Félix",
         position: "Internal President",
-        bio: "Computer Science major passionate about increasing diversity in tech and fostering internal community growth within Northwestern WiC.",
-        imageUrl: "/placeholder.svg?height=300&width=300",
+        bio: "Laura majors in Computer Science & Russian, and she leads WiC’s internal operations. Incoming SWE I at Duolingo.",
+        imageUrl: "https://media.licdn.com/dms/image/v2/D5603AQHUohEXCgoDKA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1682140583605?e=1761177600&v=beta&t=jbXEd-8BG0mgCooWPpE5966rgynjkNdUeFR3iHS979Q",
         email: "laurafelix2026@northwestern.edu",
-        linkedinUrl: "https://linkedin.com/in/laurafelix",
+        linkedinUrl: "https://www.linkedin.com/in/laurasfelix28",
         year: "Senior",
-        major: "Computer Science",
+        major: "Computer Science & Russian",
         displayOrder: 1,
     },
     {
         id: 2,
         name: "Irena Liu",
         position: "External President",
-        bio: "Data Science enthusiast focused on building external partnerships and representing Northwestern WiC in the broader tech community.",
-        imageUrl: "/placeholder.svg?height=300&width=300",
+        bio: "Irena is a Computer Science major. Through Northwestern’s TIILT lab she researches technology-enhanced education and social entrepreneurship, and she loves exploring Chicago and playing volleyball. As External President she forges partnerships with companies and other organizations to support WiC members.",
+        imageUrl: "https://media.licdn.com/dms/image/v2/D5603AQHfCoiN1kawtw/profile-displayphoto-shrink_400_400/B56ZVpahaGGQAk-/0/1741230316073?e=1761177600&v=beta&t=zoalnPs9eMDi3f1rlvlEvSteKh6ABTf7KhsJiTnheg8",
         email: "irenaliu2026@northwestern.edu",
-        linkedinUrl: "https://linkedin.com/in/irenaliu",
+        linkedinUrl: "https://www.linkedin.com/in/irena-liu",
         year: "Senior",
-        major: "Computer Science",
+        major: "Computer Science & Business",
         displayOrder: 2,
     },
     {
         id: 3,
         name: "Grace He",
         position: "Treasurer",
-        bio: "Computer Science student with expertise in financial management and ensuring fiscal responsibility for all Northwestern WiC activities.",
-        imageUrl: "/placeholder.svg?height=300&width=300",
+        bio: "Grace studies Computer Science & Economics at Northwestern, overseeing WiC’s finances, ensuring fiscal responsibility for events and initiatives.",
+        imageUrl: "https://media.licdn.com/dms/image/v2/D5603AQEFaPkCvu-Leg/profile-displayphoto-shrink_400_400/B56ZSUHB8PHEAk-/0/1737651658858?e=1761177600&v=beta&t=_UqHeUwk6cSkFT8fJV4NVdnB21LcJCv5ySnms6TTmTc",
         email: "gracehe2027@northwestern.edu",
-        linkedinUrl: "https://linkedin.com/in/gracehe",
+        linkedinUrl: "https://www.linkedin.com/in/grace-he-915983225",
         year: "Junior",
-        major: "Computer Science",
+        major: "Computer Science & Economics",
         displayOrder: 3,
     },
     {
         id: 4,
         name: "Natalie Hong",
         position: "Corporate Relations Chair",
-        bio: "Information Systems major specializing in building and maintaining relationships with corporate partners and sponsors.",
-        imageUrl: "/placeholder.svg?height=300&width=300",
+        bio: "Natalie cultivates relationships with corporate partners and sponsors to provide networking and career-development opportunities for WiC members.",
+        imageUrl: "https://media.licdn.com/dms/image/v2/D5603AQEGi-uMT0EWdA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1712208767901?e=1761177600&v=beta&t=0EDNQWpUULVJDK9xNlNlanjI3A2RQ6KwwVTPbAMY-Ss",
         email: "nataliehong2027@northwestern.edu",
-        linkedinUrl: "https://linkedin.com/in/nataliehong",
+        linkedinUrl: "https://www.linkedin.com/in/natalienhong",
         year: "Junior",
-        major: "Computer Science",
+        major: "Computer Science & Economics",
         displayOrder: 4,
     },
     {
         id: 5,
         name: "Vivian Chen",
         position: "Programming Co-Chair",
-        bio: "Computer Engineering student passionate about organizing technical workshops and educational programming for our members.",
-        imageUrl: "/placeholder.svg?height=300&width=300",
-        email: "vivian.chen@northwestern.edu",
-        linkedinUrl: "https://linkedin.com/in/vivianchen",
+        bio: "Vivian, a student at Northwestern majoring in Computer Science & Data Science, won a 2024 SBB Research Group Foundation STEM scholarship and interned at Amazon. She leverages her software engineering experience to coordinate hands-on technical workshops and hackathons for WiC.",
+        imageUrl: "https://media.licdn.com/dms/image/v2/D5603AQEfMbLtuAFx7w/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1686712001071?e=1761177600&v=beta&t=FNy935nCfEcrkWlG80iAD0ceSgS9vx848PbZOy9dULw",
+        email: "vivianchen2026@northwestern.edu",
+        linkedinUrl: "https://www.linkedin.com/in/vivianchen12",
         year: "Senior",
-        major: "Computer Science",
+        major: "Computer Science & Data Science",
         displayOrder: 5,
     },
     {
         id: 6,
         name: "Nicole Lu",
         position: "Programming Co-Chair",
-        bio: "Computer Science major focused on creating engaging technical content and hands-on learning experiences for Northwestern WiC members.",
-        imageUrl: "/placeholder.svg?height=300&width=300",
-        email: "nicole.lu@northwestern.edu",
-        linkedinUrl: "https://linkedin.com/in/nicolelu",
+        bio: "Nicole is a third-year Computer Science major in the McCormick School. At Northwestern’s Design, Technology and Research (DTR) lab she explores how interactive systems can support learning and collaboration, and she enjoys rock climbing and binge-watching TV. She co-leads WiC’s technical events alongside Vivian.",
+        imageUrl: "https://media.licdn.com/dms/image/v2/D5603AQFJLjmkDkS9tw/profile-displayphoto-shrink_400_400/B56ZXseDgiHoAg-/0/1743429057074?e=1761177600&v=beta&t=xU6oVGwrjf-JI94K8TkiRo2BmaAcZ3h_-nz1Qnq_hII",
+        email: "nicolelu2027@northwestern.edu",
+        linkedinUrl: "https://www.linkedin.com/in/nicole-lu-056306325/",
         year: "Junior",
         major: "Computer Science",
         displayOrder: 6,
@@ -82,63 +82,64 @@ const execBoard = [{
         id: 7,
         name: "Sydney Hoppenworth",
         position: "Community Outreach Chair",
-        bio: "Biomedical Engineering major dedicated to expanding Northwestern WiC's reach and building connections with the broader community.",
-        imageUrl: "/placeholder.svg?height=300&width=300",
-        email: "sydney.hoppenworth@northwestern.edu",
-        linkedinUrl: "https://linkedin.com/in/sydneyhoppenworth",
+        bio: "Sydney is CS student plus the Segal Design Certificate. She is passionate about inclusive design and community-building. As Community Outreach Chair she expands WiC’s reach through service and social events.",
+        imageUrl: "https://media.licdn.com/dms/image/v2/D5603AQHXJ-wJpcG3Lw/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1705731757219?e=1761177600&v=beta&t=vhHpItbhciMK0jvQ2GCO2AadlrEtXZ64fZlIg0DBmQI",
+        email: "sydneyhoppenworth2026@northwestern.edu",
+        linkedinUrl: "https://www.linkedin.com/in/sydhopp",
         year: "Senior",
-        major: "Biomedical Engineering",
+        major: "Computer Science + Design Certificate",
         displayOrder: 7,
     },
     {
         id: 8,
         name: "Sasha Boico",
         position: "Internal Relations Chair",
-        bio: "Computer Science student focused on strengthening relationships within our organization and fostering member engagement.",
-        imageUrl: "/placeholder.svg?height=300&width=300",
-        email: "sasha.boico@northwestern.edu",
-        linkedinUrl: "https://linkedin.com/in/sashaboico",
+        bio: "Sasha is a junior majoring in Computer Science & Chinese, and she’s active in the business fraternity AKPsi. She has a passion for startups, technology and consulting. In her WiC role she focuses on fostering engagement and connection among members.",
+        imageUrl: "https://media.licdn.com/dms/image/v2/D5603AQE2wkw2TqCakA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1712726408299?e=1761177600&v=beta&t=aSfrFZUFp855DtSOJR8RtAflbb-FnrxOeaMErqtFW8M",
+        email: "sashaboico2027@northwestern.edu",
+        linkedinUrl: "https://www.linkedin.com/in/alexandraboico/",
         year: "Junior",
-        major: "Computer Science",
+        major: "Computer Science & Chinese",
         displayOrder: 8,
     },
     {
         id: 9,
         name: "Ziye Wang",
         position: "Public Relations Chair",
-        bio: "Information Systems major specializing in marketing, communications, and promoting Northwestern WiC's mission and events.",
-        imageUrl: "/placeholder.svg?height=300&width=300",
-        email: "ziye.wang@northwestern.edu",
-        linkedinUrl: "https://linkedin.com/in/ziyewang",
+        bio: "Ziye is a junior pursuing a BA in Computer Science. A recipient of the Scholastic Gold Medal for Art and the Susan Phillips Award for music, she mentors with CovEducation and works as a photographer for Northwestern’s student newspaper. She’s also building her own app startup, and at WiC she handles marketing and promotion.",
+        imageUrl: "https://media.licdn.com/dms/image/v2/D5603AQGVAvxyk6F-lg/profile-displayphoto-shrink_400_400/B56ZVndJz2GUAg-/0/1741197451138?e=1761177600&v=beta&t=_p4znhBD2F31I-4KbxjGLHNifcFoITfuusqJS9KAYWc",
+        email: "ziyewang2027@northwestern.edu",
+        linkedinUrl: "https://www.linkedin.com/in/ziye-wang-150a50251/",
         year: "Junior",
-        major: "Information Systems",
+        major: "Computer Science",
         displayOrder: 9,
     },
     {
         id: 10,
         name: "Xiaolin Liu",
         position: "Historian",
-        bio: "Computer Engineering student responsible for documenting and preserving the history and memories of Northwestern WiC events and achievements.",
-        imageUrl: "/placeholder.svg?height=300&width=300",
-        email: "xiaolin.liu@northwestern.edu",
-        linkedinUrl: "https://linkedin.com/in/xiaolinliu",
-        year: "Sophomore",
-        major: "Computer Engineering",
+        bio: "Xiaolin is a senior studying CS. As WiC’s historian she documents events and preserves the organization’s history through photos and archives.",
+        imageUrl: "https://media.licdn.com/dms/image/v2/D5603AQF6PWLpJBq81g/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1722920980524?e=1761177600&v=beta&t=kwZch1_nella2WioqPQQ9j84Scaz-OiAAPcdsax-tsw",
+        email: "xiaolinliu2026@northwestern.edu",
+        linkedinUrl: "https://www.linkedin.com/in/xiaolin-liu-a975231b8/",
+        year: "Senior",
+        major: "Computer Science",
         displayOrder: 10,
     },
     {
         id: 11,
         name: "Sofia Flores",
         position: "Membership Director",
-        bio: "Data Science major focused on member recruitment, retention, and ensuring an inclusive experience for all Northwestern WiC members.",
-        imageUrl: "/placeholder.svg?height=300&width=300",
-        email: "sofia.flores@northwestern.edu",
-        linkedinUrl: "https://linkedin.com/in/sofiaflores",
+        bio: "Sofia is a junior MechE major who oversees member recruitment and retention. She strives to create an inclusive environment for all WiC members.",
+        imageUrl: "https://media.licdn.com/dms/image/v2/D4E03AQEPK44DEf9SBg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1730265802616?e=1761177600&v=beta&t=HtxVsI4_x3gQWhVW3nOsD0atlzihBggGz0hMHMgKzeA",
+        email: "sofiaflores2027@northwestern.edu",
+        linkedinUrl: "https://www.linkedin.com/in/sofia-flores-202704nu/",
         year: "Junior",
-        major: "Data Science",
+        major: "Mechanical Engineering",
         displayOrder: 11,
     },
-    ]
+];
+
 
 
 export default function ExecBoardPage() {
@@ -169,9 +170,9 @@ export default function ExecBoardPage() {
                   </div>
                 </div>
                 <CardTitle className="text-xl">{member.name}</CardTitle>
-                <Badge className="bg-purple-100 text-purple-800" variant="secondary">
-                  {member.position}
-                </Badge>
+                  <Badge className="bg-purple-100 text-purple-800 flex items-center justify-center text-center" variant="secondary">
+                      {member.position}
+                  </Badge>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-center space-x-4 text-sm text-muted-foreground">
@@ -215,9 +216,9 @@ export default function ExecBoardPage() {
           <CardContent className="text-center space-y-4">
             <p className="text-muted-foreground max-w-2xl mx-auto">
               We&apos;re always looking for passionate individuals who want to make a difference in the tech community.
-              Executive board positions become available each spring, and we encourage all members to consider applying.
+              Executive board positions become available each winter, and we encourage all members to consider applying.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 max-w-2xl mx-auto">
               <div className="text-left">
                 <h3 className="font-semibold mb-2">What We Look For:</h3>
                 <ul className="text-sm text-muted-foreground space-y-1">
@@ -240,7 +241,7 @@ export default function ExecBoardPage() {
               </div>
             </div>
             <div className="pt-4">
-              <Button size="lg">Learn About Open Positions</Button>
+              <Button disabled size="lg">Exec Positions open Winter 2026!</Button>
             </div>
           </CardContent>
         </Card>
@@ -256,11 +257,12 @@ export default function ExecBoardPage() {
               We&apos;re always happy to hear from our members and the broader Northwestern community.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="outline">
-                <Mail className="mr-2 h-4 w-4" />
-                Contact Executive Board
-              </Button>
-              <Button variant="outline">Schedule Office Hours</Button>
+                <Link href="mailto:wic@u.northwestern.edu">
+                    <Button variant="outline">
+                        <Mail className="mr-2 h-4 w-4" />
+                        Contact Executive Board
+                    </Button>
+                </Link>
             </div>
           </CardContent>
         </Card>
