@@ -2,8 +2,8 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Calendar, Code, Lightbulb, Network } from "lucide-react"
-import { useEffect, useState } from "react"
+import { Code, Lightbulb, Network } from "lucide-react"
+import { useEffect } from "react"
 
 export default function HomePage() {
   // Types for events fetched and displayed
@@ -31,8 +31,8 @@ export default function HomePage() {
     description?: string
   }
 
-   // 1) state to hold the fetched events
-  const [upcomingEvents, setUpcomingEvents] = useState<WicEvent[]>([])
+  //  // 1) state to hold the fetched events
+  // const [upcomingEvents, setUpcomingEvents] = useState<WicEvent[]>([])
 
   // 2) fetch + process
   useEffect(() => {
@@ -72,7 +72,7 @@ export default function HomePage() {
           new Date(`${a.date}T${a.time}:00`).getTime()
           - new Date(`${b.date}T${b.time}:00`).getTime()
         )
-      setUpcomingEvents(evs.slice(0, 3))
+      // setUpcomingEvents(evs.slice(0, 3))
     }
     loadEvents()
   }, [])
