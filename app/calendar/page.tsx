@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useEffect, useState, useMemo } from "react";
 import {
@@ -72,7 +73,7 @@ export default function CalendarPage() {
         const processed = data.map((ev: any) => {
           let dateOnly = ev.date;
           let timeOnly = ev.time ?? "";
-          let status = ev.status ?? "";
+          const status = ev.status ?? "";
           // console.log(ev.status);
 
           if (

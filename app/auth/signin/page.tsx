@@ -47,6 +47,7 @@ export default function SignInPage() {
       }
     } catch (err) {
       setError("An error occurred. Please try again.")
+      console.log(err)
     } finally {
       setIsLoading(false)
     }
@@ -93,7 +94,7 @@ export default function SignInPage() {
           </form>
           <div className="mt-6 text-center text-sm">
             <p className="text-muted-foreground">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link href="/auth/signup" className="text-purple-600 hover:underline">
                 Sign up here
               </Link>

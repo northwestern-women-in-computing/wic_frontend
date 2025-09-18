@@ -63,6 +63,7 @@ export default function SignUpPage() {
       router.push("/dashboard")
     } catch (err) {
       setError("An error occurred. Please try again.")
+      console.log(err)
     } finally {
       setIsLoading(false)
     }
