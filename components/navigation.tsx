@@ -20,7 +20,7 @@ import { NotificationBell } from "@/components/notification-bell"
 
 const navigation = [
   { name: "Home", href: "/", icon: Users },
-  { name: "Calendar", href: "/calendar", icon: Calendar },
+  // { name: "Calendar", href: "/calendar", icon: Calendar },
   { name: "Sponsors", href: "/sponsors", icon: Award },
   { name: "Executive Board", href: "/exec-board", icon: UserCheck },
 ]
@@ -100,7 +100,7 @@ export function Navigation() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
+            <div className="flex items-baseline space-x-4">
               {navigation.map((item) => {
                 const Icon = item.icon
                 return (
@@ -108,7 +108,7 @@ export function Navigation() {
                     key={item.name}
                     href={item.href}
                     className={cn(
-                      "flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors",
+                      "flex items-center space-x-1 px-3 py-1 rounded-md text-sm font-medium transition-colors",
                       pathname === item.href
                         ? "bg-primary text-primary-foreground"
                         : "text-muted-foreground hover:text-foreground hover:bg-accent",
@@ -153,20 +153,20 @@ export function Navigation() {
               </DropdownMenu>
             ) : (
               <div className="flex items-center space-x-2">
-                <Link href="/auth/signin">
-                  <Button variant="ghost">Sign In</Button>
-                </Link>
-                <Link href="/auth/signup">
+                {/*<Link href="/auth/signin">*/}
+                {/*  <Button variant="ghost">Sign In</Button>*/}
+                {/*</Link>*/}
+                <Link href="https://forms.gle/tR7fbRQsSEsGtSb47">
                   <Button>Join Us</Button>
                 </Link>
               </div>
             )}
 
-            <Link href="/admin/signin">
-              <Button variant="outline" size="icon">
-                <Lock className="h-4 w-4" />
-              </Button>
-            </Link>
+            {/*<Link href="/admin/signin">*/}
+            {/*  <Button variant="outline" size="icon">*/}
+            {/*    <Lock className="h-4 w-4" />*/}
+            {/*  </Button>*/}
+            {/*</Link>*/}
           </div>
 
           {/* Mobile Navigation */}
@@ -231,21 +231,21 @@ export function Navigation() {
                     ) : (
                       <>
                         <Link href="/auth/signin" onClick={() => setIsOpen(false)}>
-                          <Button variant="ghost" className="w-full justify-start">
-                            Sign In
-                          </Button>
+                          {/*<Button variant="ghost" className="w-full justify-start">*/}
+                          {/*  Sign In*/}
+                          {/*</Button>*/}
                         </Link>
-                        <Link href="/auth/signup" onClick={() => setIsOpen(false)}>
+                        <Link href="https://forms.gle/tR7fbRQsSEsGtSb47" onClick={() => setIsOpen(false)}>
                           <Button className="w-full">Join Us</Button>
                         </Link>
                       </>
                     )}
-                    <Link href="/admin/signin" onClick={() => setIsOpen(false)}>
-                      <Button variant="outline" className="w-full justify-start">
-                        <Lock className="mr-2 h-4 w-4" />
-                        Executive Access
-                      </Button>
-                    </Link>
+                    {/*<Link href="/admin/signin" onClick={() => setIsOpen(false)}>*/}
+                    {/*  <Button variant="outline" className="w-full justify-start">*/}
+                    {/*    <Lock className="mr-2 h-4 w-4" />*/}
+                    {/*    Executive Access*/}
+                    {/*  </Button>*/}
+                    {/*</Link>*/}
                   </div>
                 </div>
               </SheetContent>

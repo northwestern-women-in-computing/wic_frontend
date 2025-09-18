@@ -90,24 +90,24 @@ export default function HomePage() {
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-xl text-purple-100">
               Empowering women in technology through community, mentorship, and professional development at Northwestern
-              University.
+              University. Open to all enrolled NU students.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
-              <Link href="/auth/signup">
+              <Link href="https://forms.gle/tR7fbRQsSEsGtSb47">
                 <Button size="lg" className="bg-white text-purple-700 hover:bg-purple-50">
                   Join Our Community
                 </Button>
               </Link>
-              <Link href="/calendar">
-                <Button size="lg" variant="outline" className="bg-white text-purple-700 hover:bg-purple-50">
-                  View Events
-                </Button>
-              </Link>
-              <Link href="/leaderboard">
-              <Button size="lg" variant="outline" className="bg-white text-purple-700 hover:bg-purple-50">
-                View Leaderboard
-              </Button>
-            </Link>
+              {/*<Link href="/calendar">*/}
+              {/*  <Button size="lg" variant="outline" className="bg-white text-purple-700 hover:bg-purple-50">*/}
+              {/*    View Events*/}
+              {/*  </Button>*/}
+              {/*</Link>*/}
+              {/*<Link href="/leaderboard">*/}
+              {/*<Button size="lg" variant="outline" className="bg-white text-purple-700 hover:bg-purple-50">*/}
+              {/*  View Leaderboard*/}
+              {/*</Button>*/}
+            {/*</Link>*/}
             </div>
           </div>
         </div>
@@ -118,15 +118,15 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
             <div className="text-center">
-              <div className="text-3xl font-bold text-purple-600">200+</div>
+              <div className="text-3xl font-bold text-purple-600">100+</div>
               <div className="mt-2 text-sm text-muted-foreground">Active Members</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-purple-600">50+</div>
-              <div className="mt-2 text-sm text-muted-foreground">Events This Year</div>
+              <div className="text-3xl font-bold text-purple-600">30+</div>
+              <div className="mt-2 text-sm text-muted-foreground">Events Per Year</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-purple-600">15+</div>
+              <div className="text-3xl font-bold text-purple-600">5+</div>
               <div className="mt-2 text-sm text-muted-foreground">Industry Partners</div>
             </div>
           </div>
@@ -139,7 +139,7 @@ export default function HomePage() {
           <div className="text-center">
             <h2 className="text-3xl font-bold tracking-tight">What We Offer</h2>
             <p className="mt-4 text-lg text-muted-foreground">
-              Comprehensive support for women pursuing careers in technology
+              Comprehensive support for women and non-binary folks pursuing careers in technology
             </p>
           </div>
           <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -181,7 +181,7 @@ export default function HomePage() {
               <CardContent>
                 <CardDescription>
                   Get career guidance, resume reviews, interview preparation, and access to exclusive internship and job
-                  opportunities.
+                  opportunities. (+ free GHC trip anyone?)
                 </CardDescription>
               </CardContent>
             </Card>
@@ -190,14 +190,14 @@ export default function HomePage() {
       </section>
 
       {/* Upcoming Events Preview */}
-      <section className="py-16 bg-muted/50">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <h2 className="text-3xl font-bold tracking-tight">Upcoming Events</h2>
-            <Link href="/calendar">
-              <Button variant="outline">View All Events</Button>
-            </Link>
-          </div>
+      {/*<section className="py-16 bg-muted/50">*/}
+      {/*  <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">*/}
+      {/*    <div className="flex items-center justify-between">*/}
+      {/*      <h2 className="text-3xl font-bold tracking-tight">Upcoming Events</h2>*/}
+      {/*      <Link href="/calendar">*/}
+      {/*        <Button variant="outline">View All Events</Button>*/}
+      {/*      </Link>*/}
+      {/*    </div>*/}
 
       {/* MOCK DATA*/}
           {/* <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -252,24 +252,24 @@ export default function HomePage() {
               </CardContent>
             </Card>
           </div> */}
-          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {upcomingEvents.map(event => (
-              <Card key={event.id}>
-                <CardHeader>
-                  <CardTitle className="text-lg">{event.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription>{event.description}</CardDescription>
-                  <div className="mt-4 flex items-center text-sm text-muted-foreground">
-                    <Calendar className="mr-1 h-4 w-4" />
-                    {event.date} • {event.time} • {event.location}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div> 
-        </div>
-      </section>
+          {/*<div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">*/}
+          {/*  {upcomingEvents.map(event => (*/}
+          {/*    <Card key={event.id}>*/}
+          {/*      <CardHeader>*/}
+          {/*        <CardTitle className="text-lg">{event.title}</CardTitle>*/}
+          {/*      </CardHeader>*/}
+          {/*      <CardContent>*/}
+          {/*        <CardDescription>{event.description}</CardDescription>*/}
+          {/*        <div className="mt-4 flex items-center text-sm text-muted-foreground">*/}
+          {/*          <Calendar className="mr-1 h-4 w-4" />*/}
+          {/*          {event.date} • {event.time} • {event.location}*/}
+          {/*        </div>*/}
+          {/*      </CardContent>*/}
+          {/*    </Card>*/}
+          {/*  ))}*/}
+          {/*</div> */}
+      {/*  </div>*/}
+      {/*</section>*/}
 
       {/* CTA Section */}
       <section className="py-16">
@@ -280,7 +280,7 @@ export default function HomePage() {
               Take the first step towards building your career in technology with the support of an amazing community.
             </p>
             <div className="mt-8">
-              <Link href="/auth/signup">
+              <Link href="https://forms.gle/tR7fbRQsSEsGtSb47">
                 <Button size="lg" className="bg-white text-purple-700 hover:bg-purple-50">
                   Sign Up Today
                 </Button>
