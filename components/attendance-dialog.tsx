@@ -116,7 +116,7 @@ export function AttendanceDialog({ children }: AttendanceDialogProps) {
       } else {
         setError("Invalid attendance key. Please check the key and try again.")
       }
-    } catch (err) {
+    } catch {
       setError("An error occurred. Please try again.")
     } finally {
       setIsLoading(false)

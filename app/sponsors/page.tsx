@@ -81,7 +81,7 @@ export default function SponsorsPage() {
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold">Our Sponsors</h1>
           <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">
-            We're grateful for the support of these amazing companies who share our mission of empowering women in
+            We&apos;re grateful for the support of these amazing companies who share our mission of empowering women in
             technology.
           </p>
         </div>

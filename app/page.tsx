@@ -2,20 +2,46 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Calendar, Code, Lightbulb, Network } from "lucide-react"
 import { useEffect, useState } from "react"
 
 export default function HomePage() {
+  // Types for events fetched and displayed
+  type FetchedEvent = {
+    id: string | number
+    title: string
+    date: string
+    time?: string
+    location: string
+    category: string
+    format: string
+    status?: string
+    description?: string
+  }
+
+  type WicEvent = {
+    id: string | number
+    title: string
+    date: string
+    time: string
+    location: string
+    category: string
+    format: string
+    status: string
+    description?: string
+  }
+
    // 1) state to hold the fetched events
-  const [upcomingEvents, setUpcomingEvents] = useState<any[]>([])
+  const [upcomingEvents, setUpcomingEvents] = useState<WicEvent[]>([])
 
   // 2) fetch + process
   useEffect(() => {
     async function loadEvents() {
       const res = await fetch("http://localhost:5000/api/events")
       if (!res.ok) return
-      const data = await res.json()
+      const raw = (await res.json()) as unknown
+
+      if (!Array.isArray(raw)) return
 
       // Filter & sort like CalendarPage
       const validStatuses = [
@@ -24,23 +50,25 @@ export default function HomePage() {
         "registration open",
         "confirmed",
       ]
-      const evs = data
-        .map((ev: any) => {
+      const evs = (raw as FetchedEvent[])
+        .map((ev): FetchedEvent & { time: string } => {
           const [d, t] = ev.date.includes("T") 
             ? ev.date.split("T") 
             : [ev.date, "00:00"]
-          return { ...ev, date: d, time: t.slice(0,5) }
+          return { ...ev, date: d, time: (t ?? "00:00").slice(0,5) }
         })
-        .filter((ev: any) =>
+        .filter((ev): ev is WicEvent =>
+          Boolean(
           ev.id &&
           ev.title &&
           ev.date &&
           ev.category &&
           ev.location &&
           ev.format &&
-          validStatuses.includes(ev.status?.toLowerCase() ?? "")
+          validStatuses.includes((ev.status ?? "").toLowerCase())
+          )
         )
-        .sort((a: any, b: any) =>
+        .sort((a, b) =>
           new Date(`${a.date}T${a.time}:00`).getTime()
           - new Date(`${b.date}T${b.time}:00`).getTime()
         )
