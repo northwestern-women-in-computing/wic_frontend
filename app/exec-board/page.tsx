@@ -154,7 +154,7 @@ export default function ExecBoardPage() {
           </CardHeader>
           <CardContent className="text-center space-y-4">
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              We're always looking for passionate individuals who want to make a difference in the tech community.
+              We&apos;re always looking for passionate individuals who want to make a difference in the tech community.
               Executive board positions become available each spring, and we encourage all members to consider applying.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
@@ -163,7 +163,7 @@ export default function ExecBoardPage() {
                 <ul className="text-sm text-muted-foreground space-y-1">
                   <li>• Passion for supporting women in tech</li>
                   <li>• Leadership experience or potential</li>
-                  <li>• Commitment to the organization's mission</li>
+                  <li>• Commitment to the organization&apos;s mission</li>
                   <li>• Strong communication skills</li>
                   <li>• Collaborative mindset</li>
                 </ul>
@@ -193,7 +193,7 @@ export default function ExecBoardPage() {
           </CardHeader>
           <CardContent className="text-center">
             <p className="text-muted-foreground mb-4">
-              We're always happy to hear from our members and the broader Northwestern community.
+              We&apos;re always happy to hear from our members and the broader Northwestern community.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="outline">

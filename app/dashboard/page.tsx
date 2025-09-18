@@ -19,7 +19,15 @@ const memberData = {
   nextEvent: "Tech Talk: Women Leaders in AI",
 }
 
-const leaderboard = [
+type LeaderboardMember = {
+  rank: number
+  name: string
+  points: number
+  year: string
+  isCurrentUser?: boolean
+}
+
+const leaderboard: LeaderboardMember[] = [
   { rank: 1, name: "Sarah Johnson", points: 150, year: "Senior" },
   { rank: 2, name: "Emily Chen", points: 135, year: "Junior" },
   { rank: 3, name: "Maya Patel", points: 120, year: "Sophomore" },

@@ -4,8 +4,14 @@ import { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
+type LeaderboardUser = {
+  id: string | number
+  name: string
+  points: number
+}
+
 export default function LeaderboardPage() {
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<LeaderboardUser[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -14,7 +20,7 @@ export default function LeaderboardPage() {
       try {
         const res = await fetch("http://localhost:5000/api/leaderboard");
         const text = await res.text();
-        let data;
+        let data: unknown;
         try {
           data = JSON.parse(text);
         } catch {
@@ -26,12 +32,13 @@ export default function LeaderboardPage() {
         }
 
         // Sort descending by points
-        data.sort((a: any, b: any) => b.points - a.points);
-        setUsers(data);
-      } catch (err: any) {
-        setError(err.message);
-        console.error("Leaderboard fetch error:", err);
-        setError(err.message);      
+        const typedData = data as LeaderboardUser[];
+        typedData.sort((a, b) => b.points - a.points);
+        setUsers(typedData);
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : "Unknown error occurred";
+        setError(errorMessage);
+        console.error("Leaderboard fetch error:", err);     
     } finally {
         setLoading(false);
       }
@@ -60,7 +67,7 @@ export default function LeaderboardPage() {
       <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
         <h1 className="text-3xl font-bold mb-6">Leaderboard</h1>
         <div className="space-y-4">
-          {users.map((user: any, index: number) => (
+          {users.map((user, index: number) => (
             <Card key={user.id} className="overflow-hidden">
               <CardHeader>
                 <div className="flex items-center justify-between">
