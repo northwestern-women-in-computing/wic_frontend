@@ -50,29 +50,29 @@ export default function HomePage() {
         "registration open",
         "confirmed",
       ]
-      const evs = (raw as FetchedEvent[])
-        .map((ev): FetchedEvent & { time: string } => {
-          const [d, t] = ev.date.includes("T") 
-            ? ev.date.split("T") 
-            : [ev.date, "00:00"]
-          return { ...ev, date: d, time: (t ?? "00:00").slice(0,5) }
-        })
-        .filter((ev): ev is WicEvent =>
-          Boolean(
-          ev.id &&
-          ev.title &&
-          ev.date &&
-          ev.category &&
-          ev.location &&
-          ev.format &&
-          validStatuses.includes((ev.status ?? "").toLowerCase())
-          )
-        )
-        .sort((a, b) =>
-          new Date(`${a.date}T${a.time}:00`).getTime()
-          - new Date(`${b.date}T${b.time}:00`).getTime()
-        )
-      // setUpcomingEvents(evs.slice(0, 3))
+    //   const evs = (raw as FetchedEvent[])
+    //     .map((ev): FetchedEvent & { time: string } => {
+    //       const [d, t] = ev.date.includes("T")
+    //         ? ev.date.split("T")
+    //         : [ev.date, "00:00"]
+    //       return { ...ev, date: d, time: (t ?? "00:00").slice(0,5) }
+    //     })
+    //     .filter((ev): ev is WicEvent =>
+    //       Boolean(
+    //       ev.id &&
+    //       ev.title &&
+    //       ev.date &&
+    //       ev.category &&
+    //       ev.location &&
+    //       ev.format &&
+    //       validStatuses.includes((ev.status ?? "").toLowerCase())
+    //       )
+    //     )
+    //     .sort((a, b) =>
+    //       new Date(`${a.date}T${a.time}:00`).getTime()
+    //       - new Date(`${b.date}T${b.time}:00`).getTime()
+    //     )
+    //   // setUpcomingEvents(evs.slice(0, 3))
     }
     loadEvents()
   }, [])
