@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { API_ENDPOINTS } from "@/lib/api-config";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, MapPin, Users } from "lucide-react";
@@ -56,7 +57,7 @@ export default function CalendarPage() {
   useEffect(() => {
     async function fetchEvents() {
       try {
-        const res = await fetch("http://localhost:5000/api/events");
+        const res = await fetch(API_ENDPOINTS.events);
         if (!res.ok) throw new Error("Failed to fetch events");
         const data = await res.json();
         // console.log("📡 Backend response:", data);

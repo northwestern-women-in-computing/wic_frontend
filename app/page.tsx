@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Code, Lightbulb, Network, Calendar as CalendarIcon } from "lucide-react"
 import { useEffect, useState } from "react"
+import { API_ENDPOINTS } from "@/lib/api-config"
 
 export default function HomePage() {
   // Types for events fetched and displayed
@@ -41,7 +42,7 @@ export default function HomePage() {
   useEffect(() => {
     async function loadEvents() {
       try {
-        const res = await fetch("http://localhost:5000/api/events")
+        const res = await fetch(API_ENDPOINTS.events)
         if (!res.ok) {
           console.error("Failed to fetch events:", res.status, res.statusText)
           return

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
+import { API_ENDPOINTS } from "@/lib/api-config";
+
 type LeaderboardUser = {
   id: string | number
   name: string
@@ -18,7 +20,7 @@ export default function LeaderboardPage() {
   useEffect(() => {
     async function fetchLeaderboard() {
       try {
-        const res = await fetch("http://localhost:5000/api/leaderboard");
+        const res = await fetch(API_ENDPOINTS.leaderboard);
         const text = await res.text();
         let data: unknown;
         try {
