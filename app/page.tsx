@@ -18,6 +18,7 @@ export default function HomePage() {
     format: string
     status?: string
     description?: string
+    attendanceForm?: string
   }
 
   type WicEvent = {
@@ -30,6 +31,7 @@ export default function HomePage() {
     format: string
     status: string
     description?: string
+    attendanceForm?: string
   }
 
   // 1) state to hold the fetched events
@@ -81,6 +83,15 @@ export default function HomePage() {
             validStatuses.includes((ev.status ?? "").toLowerCase())
             )
           )
+          .filter((ev) => {
+            // Only show upcoming events on home page
+            if (!ev.date || ev.date === "1970-01-01") return true; // Include events without dates
+            const eventDate = new Date(`${ev.date}T${ev.time}:00`);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            eventDate.setHours(0, 0, 0, 0);
+            return eventDate >= today; // Only upcoming events
+          })
           .sort((a, b) => {
             // Sort by date if available, otherwise keep original order
             const dateA = a.date && a.date !== "1970-01-01" 
@@ -247,6 +258,15 @@ export default function HomePage() {
                         <CalendarIcon className="mr-1 h-4 w-4" />
                         {formattedTime} • {event.location}
                       </div>
+                      {event.attendanceForm && typeof event.attendanceForm === 'string' && event.attendanceForm.trim() && (
+                        <div className="mt-4">
+                          <Button asChild size="sm">
+                            <a href={event.attendanceForm} target="_blank" rel="noopener noreferrer">
+                              RSVP
+                            </a>
+                          </Button>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 )

@@ -10,15 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Calendar, Clock, MapPin, Users } from "lucide-react";
-import { AttendanceDialog } from "@/components/attendance-dialog";
 
 // Category color mapping
 const categoryColors: Record<string, string> = {
@@ -60,7 +52,6 @@ export default function CalendarPage() {
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   useEffect(() => {
     async function fetchEvents() {
@@ -127,13 +118,56 @@ export default function CalendarPage() {
     fetchEvents();
   }, []);
 
-  const sortedEvents = useMemo(() => {
-    return [...events].sort((a, b) => {
-      const da = new Date(`${a.date}T${a.time ?? "00:00"}:00`).getTime();
-      const db = new Date(`${b.date}T${b.time ?? "00:00"}:00`).getTime();
-      return sortOrder === "asc" ? da - db : db - da;
+  // Separate events into upcoming and past
+  const { upcomingEvents, pastEvents } = useMemo(() => {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0); // Set to start of today for comparison
+    
+    const upcoming: any[] = [];
+    const past: any[] = [];
+    
+    events.forEach((event) => {
+      const eventDate = event.date && event.date !== "1970-01-01" 
+        ? new Date(`${event.date}T${event.time ?? "00:00"}:00`)
+        : null;
+      
+      if (eventDate && !isNaN(eventDate.getTime())) {
+        eventDate.setHours(0, 0, 0, 0);
+        if (eventDate >= now) {
+          upcoming.push(event);
+        } else {
+          past.push(event);
+        }
+      } else {
+        // Events without valid dates go to upcoming (assume they're future)
+        upcoming.push(event);
+      }
     });
-  }, [events, sortOrder]);
+    
+    // Sort upcoming events ascending (earliest first)
+    upcoming.sort((a, b) => {
+      const da = a.date && a.date !== "1970-01-01"
+        ? new Date(`${a.date}T${a.time ?? "00:00"}:00`).getTime()
+        : Number.MAX_SAFE_INTEGER;
+      const db = b.date && b.date !== "1970-01-01"
+        ? new Date(`${b.date}T${b.time ?? "00:00"}:00`).getTime()
+        : Number.MAX_SAFE_INTEGER;
+      return da - db;
+    });
+    
+    // Sort past events descending (most recent first)
+    past.sort((a, b) => {
+      const da = a.date && a.date !== "1970-01-01"
+        ? new Date(`${a.date}T${a.time ?? "00:00"}:00`).getTime()
+        : 0;
+      const db = b.date && b.date !== "1970-01-01"
+        ? new Date(`${b.date}T${b.time ?? "00:00"}:00`).getTime()
+        : 0;
+      return db - da; // Descending for past events
+    });
+    
+    return { upcomingEvents: upcoming, pastEvents: past };
+  }, [events]);
 
   if (loading)
     return (
@@ -151,39 +185,20 @@ export default function CalendarPage() {
   return (
     <div className="min-h-screen bg-muted/50 py-8">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-6 flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">Events Calendar</h1>
-            <p className="text-muted-foreground">
-              Discover upcoming events and workshops. Earn points and climb the
-              leaderboard!
-            </p>
-          </div>
-          <div className="flex items-center space-x-3">
-            <span className="text-sm font-medium text-muted-foreground">
-              Sort:
-            </span>
-            <Select
-              value={sortOrder}
-              onValueChange={(value) => setSortOrder(value as "asc" | "desc")}
-            >
-              <SelectTrigger className="w-52">
-                <SelectValue>
-                  {sortOrder === "asc"
-                    ? "Date ↑ (Earliest First)"
-                    : "Date ↓ (Latest First)"}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="asc">Date ↑ (Earliest First)</SelectItem>
-                <SelectItem value="desc">Date ↓ (Latest First)</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold">Events Calendar</h1>
+          <p className="text-muted-foreground mt-2">
+            Discover upcoming events and workshops. Earn points and climb the
+            leaderboard!
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-6">
-          {sortedEvents.map((event) => (
+        {/* Upcoming Events Section */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-semibold mb-4">Upcoming Events</h2>
+          {upcomingEvents.length > 0 ? (
+            <div className="grid grid-cols-1 gap-6">
+              {upcomingEvents.map((event) => (
             <Card key={event.id} className="overflow-hidden">
               <CardHeader>
                 <div className="flex items-start justify-between">
@@ -195,10 +210,12 @@ export default function CalendarPage() {
                       >
                       {event.category}
                       </Badge>
-                      {event.format && (
+                      {event.format && event.format !== "0" && event.format !== 0 && String(event.format).trim() && (
                         <Badge variant="secondary">{event.format}</Badge>
                       )}
-                      <Badge variant="outline">{event.points} points</Badge>
+                      {event.points > 0 && (
+                        <Badge variant="outline">{event.points} points</Badge>
+                      )}
                       {event.status && (
                         <Badge
                           className={`bg-${event.statusColor}-100 text-${event.statusColor}-800`}
@@ -211,18 +228,23 @@ export default function CalendarPage() {
                     </div>
                     <CardTitle className="text-xl">{event.title}</CardTitle>
                   </div>
-                  <div className="flex space-x-2">
-                    <Button>RSVP</Button>
-                    <AttendanceDialog>
-                      <Button variant="outline">Register Attendance</Button>
-                    </AttendanceDialog>
-                  </div>
+                  {event.attendanceForm && typeof event.attendanceForm === 'string' && event.attendanceForm.trim() && (
+                    <div>
+                      <Button asChild>
+                        <a href={event.attendanceForm} target="_blank" rel="noopener noreferrer">
+                          RSVP
+                        </a>
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </CardHeader>
               <CardContent>
-                <CardDescription className="text-base mb-4">
-                  {event.description}
-                </CardDescription>
+                {event.description && (
+                  <CardDescription className="text-base mb-4">
+                    {event.description}
+                  </CardDescription>
+                )}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                   <div className="flex items-center space-x-2">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -238,24 +260,133 @@ export default function CalendarPage() {
                   </div>
                   <div className="flex items-center space-x-2">
                     <MapPin className="h-4 w-4 text-muted-foreground" />
-                    <span>{event.location}</span>
+                    <span>{event.location && event.location !== "0" ? event.location : "TBD"}</span>
                   </div>
                 </div>
-                <div className="mt-4 flex items-center justify-between text-sm text-muted-foreground">
-                  <div className="flex items-center space-x-2">
-                    <Users className="h-4 w-4" />
-                    <span>
-                      {event.attendees}/{event.maxAttendees}
-                    </span>
+                {event.maxAttendees != null && Number(event.maxAttendees) > 0 && (
+                  <div className="mt-4 flex items-center justify-between text-sm text-muted-foreground">
+                    <div className="flex items-center space-x-2">
+                      <Users className="h-4 w-4" />
+                      <span>
+                        {event.attendees || 0}/{event.maxAttendees}
+                      </span>
+                    </div>
+                    <div>
+                      {Math.max(0, Number(event.maxAttendees) - (event.attendees || 0))} spots remaining
+                    </div>
                   </div>
-                  <div>
-                    {event.maxAttendees - event.attendees} spots remaining
-                  </div>
-                </div>
+                )}
               </CardContent>
             </Card>
-          ))}
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12 bg-muted/50 rounded-lg">
+              <p className="text-muted-foreground text-lg">
+                No upcoming events scheduled at this time.
+              </p>
+              <p className="text-muted-foreground text-sm mt-2">
+                Check back soon for new events!
+              </p>
+            </div>
+          )}
         </div>
+
+        {/* Past Events Section */}
+        {pastEvents.length > 0 && (
+          <div className="mb-12">
+            <h2 className="text-2xl font-semibold mb-4">Past Events</h2>
+            <div className="grid grid-cols-1 gap-6">
+              {pastEvents.map((event) => (
+                <Card key={event.id} className="overflow-hidden opacity-75">
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <Badge
+                            className={`bg-${event.categoryColor}-100 text-${event.categoryColor}-800`}
+                            variant="secondary"
+                          >
+                          {event.category}
+                          </Badge>
+                          {event.format && event.format !== "0" && event.format !== 0 && String(event.format).trim() && (
+                            <Badge variant="secondary">{event.format}</Badge>
+                          )}
+                          {event.points > 0 && (
+                            <Badge variant="outline">{event.points} points</Badge>
+                          )}
+                          {event.status && (
+                            <Badge
+                              className={`bg-${event.statusColor}-100 text-${event.statusColor}-800`}
+                              variant="secondary"
+                            >
+                              {event.status.charAt(0).toUpperCase() +
+                                event.status.slice(1)}
+                            </Badge>
+                          )}
+                        </div>
+                        <CardTitle className="text-xl">{event.title}</CardTitle>
+                      </div>
+                      {event.attendanceForm && typeof event.attendanceForm === 'string' && event.attendanceForm.trim() && (
+                        <div>
+                          <Button asChild>
+                            <a href={event.attendanceForm} target="_blank" rel="noopener noreferrer">
+                              RSVP
+                            </a>
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    {event.description && (
+                      <CardDescription className="text-base mb-4">
+                        {event.description}
+                      </CardDescription>
+                    )}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                      <div className="flex items-center space-x-2">
+                        <Calendar className="h-4 w-4 text-muted-foreground" />
+                        <span>{formatDate(event.date)}</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Clock className="h-4 w-4 text-muted-foreground" />
+                        <span>
+                          {formatTime(
+                            event.date + "T" + (event.time ?? "00:00") + ":00"
+                          )}
+                        </span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <MapPin className="h-4 w-4 text-muted-foreground" />
+                        <span>{event.location && event.location !== "0" ? event.location : "TBD"}</span>
+                      </div>
+                    </div>
+                    {event.maxAttendees != null && Number(event.maxAttendees) > 0 && (
+                      <div className="mt-4 flex items-center justify-between text-sm text-muted-foreground">
+                        <div className="flex items-center space-x-2">
+                          <Users className="h-4 w-4" />
+                          <span>
+                            {event.attendees || 0}/{event.maxAttendees}
+                          </span>
+                        </div>
+                        <div>
+                          {Math.max(0, Number(event.maxAttendees) - (event.attendees || 0))} spots remaining
+                        </div>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {upcomingEvents.length === 0 && pastEvents.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">No events found.</p>
+          </div>
+        )}
 
         <Card className="mt-8">
           <CardHeader>
