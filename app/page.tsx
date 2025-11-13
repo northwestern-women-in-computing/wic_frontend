@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Code, Lightbulb, Network } from "lucide-react"
-import { useEffect } from "react"
+import { Badge } from "@/components/ui/badge"
+import { Code, Lightbulb, Network, Calendar as CalendarIcon } from "lucide-react"
+import { useEffect, useState } from "react"
 
 export default function HomePage() {
   // Types for events fetched and displayed
@@ -32,48 +32,58 @@ export default function HomePage() {
     description?: string
   }
 
-  //  // 1) state to hold the fetched events
-  // const [upcomingEvents, setUpcomingEvents] = useState<WicEvent[]>([])
+  // 1) state to hold the fetched events
+  const [upcomingEvents, setUpcomingEvents] = useState<WicEvent[]>([])
 
   // 2) fetch + process
   useEffect(() => {
     async function loadEvents() {
-      const res = await fetch("http://localhost:5000/api/events")
-      if (!res.ok) return
-      const raw = (await res.json()) as unknown
+      try {
+        const res = await fetch("http://localhost:5000/api/events")
+        if (!res.ok) {
+          console.error("Failed to fetch events:", res.status, res.statusText)
+          return
+        }
+        const raw = (await res.json()) as unknown
 
-      if (!Array.isArray(raw)) return
+        if (!Array.isArray(raw)) {
+          console.error("Events data is not an array:", raw)
+          return
+        }
 
-      // Filter & sort like CalendarPage
-      const validStatuses = [
-        "done",
-        "cancelled",
-        "registration open",
-        "confirmed",
-      ]
-    //   const evs = (raw as FetchedEvent[])
-    //     .map((ev): FetchedEvent & { time: string } => {
-    //       const [d, t] = ev.date.includes("T")
-    //         ? ev.date.split("T")
-    //         : [ev.date, "00:00"]
-    //       return { ...ev, date: d, time: (t ?? "00:00").slice(0,5) }
-    //     })
-    //     .filter((ev): ev is WicEvent =>
-    //       Boolean(
-    //       ev.id &&
-    //       ev.title &&
-    //       ev.date &&
-    //       ev.category &&
-    //       ev.location &&
-    //       ev.format &&
-    //       validStatuses.includes((ev.status ?? "").toLowerCase())
-    //       )
-    //     )
-    //     .sort((a, b) =>
-    //       new Date(`${a.date}T${a.time}:00`).getTime()
-    //       - new Date(`${b.date}T${b.time}:00`).getTime()
-    //     )
-    //   // setUpcomingEvents(evs.slice(0, 3))
+        // Filter & sort like CalendarPage
+        const validStatuses = [
+          "done",
+          "cancelled",
+          "registration open",
+          "confirmed",
+        ]
+        const evs = (raw as FetchedEvent[])
+          .map((ev): FetchedEvent & { time: string } => {
+            const [d, t] = ev.date.includes("T")
+              ? ev.date.split("T")
+              : [ev.date, "00:00"]
+            return { ...ev, date: d, time: (t ?? "00:00").slice(0,5) }
+          })
+          .filter((ev): ev is WicEvent =>
+            Boolean(
+            ev.id &&
+            ev.title &&
+            ev.date &&
+            ev.category &&
+            ev.location &&
+            ev.format &&
+            validStatuses.includes((ev.status ?? "").toLowerCase())
+            )
+          )
+          .sort((a, b) =>
+            new Date(`${a.date}T${a.time}:00`).getTime()
+            - new Date(`${b.date}T${b.time}:00`).getTime()
+          )
+        setUpcomingEvents(evs.slice(0, 3))
+      } catch (error) {
+        console.error("Error fetching events:", error)
+      }
     }
     loadEvents()
   }, [])
@@ -99,16 +109,16 @@ export default function HomePage() {
                   Join Our Community
                 </Button>
               </Link>
-              {/*<Link href="/calendar">*/}
-              {/*  <Button size="lg" variant="outline" className="bg-white text-purple-700 hover:bg-purple-50">*/}
-              {/*    View Events*/}
-              {/*  </Button>*/}
-              {/*</Link>*/}
-              {/*<Link href="/leaderboard">*/}
-              {/*<Button size="lg" variant="outline" className="bg-white text-purple-700 hover:bg-purple-50">*/}
-              {/*  View Leaderboard*/}
-              {/*</Button>*/}
-            {/*</Link>*/}
+              <Link href="/calendar">
+                <Button size="lg" variant="outline" className="bg-white text-purple-700 hover:bg-purple-50">
+                  View Events
+                </Button>
+              </Link>
+              <Link href="/leaderboard">
+                <Button size="lg" variant="outline" className="bg-white text-purple-700 hover:bg-purple-50">
+                  View Leaderboard
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -191,86 +201,49 @@ export default function HomePage() {
       </section>
 
       {/* Upcoming Events Preview */}
-      {/*<section className="py-16 bg-muted/50">*/}
-      {/*  <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">*/}
-      {/*    <div className="flex items-center justify-between">*/}
-      {/*      <h2 className="text-3xl font-bold tracking-tight">Upcoming Events</h2>*/}
-      {/*      <Link href="/calendar">*/}
-      {/*        <Button variant="outline">View All Events</Button>*/}
-      {/*      </Link>*/}
-      {/*    </div>*/}
-
-      {/* MOCK DATA*/}
-          {/* <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <Badge variant="secondary">Feb 15</Badge>
-                  <Badge>10 pts</Badge>
-                </div>
-                <CardTitle className="text-lg">Tech Talk: Women Leaders in AI</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription>
-                  Join us for an inspiring talk with women leaders from top AI companies.
-                </CardDescription>
-                <div className="mt-4 flex items-center text-sm text-muted-foreground">
-                  <Calendar className="mr-1 h-4 w-4" />
-                  6:00 PM • Tech Building Room 101
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <Badge variant="secondary">Feb 22</Badge>
-                  <Badge>15 pts</Badge>
-                </div>
-                <CardTitle className="text-lg">Coding Workshop: Web Development</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription>Hands-on workshop covering HTML, CSS, and JavaScript fundamentals.</CardDescription>
-                <div className="mt-4 flex items-center text-sm text-muted-foreground">
-                  <Calendar className="mr-1 h-4 w-4" />
-                  7:00 PM • Computer Lab A
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <Badge variant="secondary">Mar 1</Badge>
-                  <Badge>20 pts</Badge>
-                </div>
-                <CardTitle className="text-lg">Networking Night</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription>Connect with alumni and industry professionals over dinner.</CardDescription>
-                <div className="mt-4 flex items-center text-sm text-muted-foreground">
-                  <Calendar className="mr-1 h-4 w-4" />
-                  6:30 PM • University Center
-                </div>
-              </CardContent>
-            </Card>
-          </div> */}
-          {/*<div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">*/}
-          {/*  {upcomingEvents.map(event => (*/}
-          {/*    <Card key={event.id}>*/}
-          {/*      <CardHeader>*/}
-          {/*        <CardTitle className="text-lg">{event.title}</CardTitle>*/}
-          {/*      </CardHeader>*/}
-          {/*      <CardContent>*/}
-          {/*        <CardDescription>{event.description}</CardDescription>*/}
-          {/*        <div className="mt-4 flex items-center text-sm text-muted-foreground">*/}
-          {/*          <Calendar className="mr-1 h-4 w-4" />*/}
-          {/*          {event.date} • {event.time} • {event.location}*/}
-          {/*        </div>*/}
-          {/*      </CardContent>*/}
-          {/*    </Card>*/}
-          {/*  ))}*/}
-          {/*</div> */}
-      {/*  </div>*/}
-      {/*</section>*/}
+      {upcomingEvents.length > 0 && (
+        <section className="py-16 bg-muted/50">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between">
+              <h2 className="text-3xl font-bold tracking-tight">Upcoming Events</h2>
+              <Link href="/calendar">
+                <Button variant="outline">View All Events</Button>
+              </Link>
+            </div>
+            <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {upcomingEvents.map(event => {
+                const eventDate = new Date(`${event.date}T${event.time}:00`)
+                const formattedDate = eventDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })
+                const formattedTime = eventDate.toLocaleTimeString("en-US", {
+                  hour: "numeric",
+                  minute: "2-digit",
+                  hour12: true,
+                })
+                return (
+                  <Card key={event.id}>
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <Badge variant="secondary">{formattedDate}</Badge>
+                        <Badge>{event.category}</Badge>
+                      </div>
+                      <CardTitle className="text-lg mt-2">{event.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      {event.description && (
+                        <CardDescription className="mb-4">{event.description}</CardDescription>
+                      )}
+                      <div className="mt-4 flex items-center text-sm text-muted-foreground">
+                        <CalendarIcon className="mr-1 h-4 w-4" />
+                        {formattedTime} • {event.location}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA Section */}
       <section className="py-16">

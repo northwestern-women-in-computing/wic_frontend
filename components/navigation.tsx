@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { Menu, Users, Award, UserCheck, User, LogOut } from "lucide-react"
+import { Menu, Users, Award, UserCheck, User, LogOut, Calendar, Trophy } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
@@ -20,7 +20,8 @@ import { NotificationBell } from "@/components/notification-bell"
 
 const navigation = [
   { name: "Home", href: "/", icon: Users },
-  // { name: "Calendar", href: "/calendar", icon: Calendar },
+  { name: "Calendar", href: "/calendar", icon: Calendar },
+  { name: "Leaderboard", href: "/leaderboard", icon: Trophy },
   { name: "Sponsors", href: "/sponsors", icon: Award },
   { name: "Executive Board", href: "/exec-board", icon: UserCheck },
 ]
