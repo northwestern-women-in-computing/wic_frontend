@@ -101,16 +101,21 @@ export default function CalendarPage() {
           "registration open",
           "confirmed",
         ];
-        const filteredEvents = processed.filter(
-          (ev: any) =>
-            ev.id &&
-            ev.title &&
-            ev.date &&
-            ev.category &&
-            ev.location &&
-            ev.format &&
-            validStatuses.includes(ev.status)
-        );
+        const filteredEvents = processed
+          .map((ev: any) => ({
+            ...ev,
+            category: ev.category || "Event",
+            location: ev.location || "TBD",
+            format: ev.format || "In-Person",
+            date: ev.date || "1970-01-01",
+            time: ev.time || "00:00"
+          }))
+          .filter(
+            (ev: any) =>
+              ev.id &&
+              ev.title &&
+              validStatuses.includes(ev.status)
+          );
 
         setEvents(filteredEvents);
       } catch (err: any) {

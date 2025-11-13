@@ -60,27 +60,38 @@ export default function HomePage() {
         ]
         const evs = (raw as FetchedEvent[])
           .map((ev): FetchedEvent & { time: string } => {
-            const [d, t] = ev.date.includes("T")
-              ? ev.date.split("T")
-              : [ev.date, "00:00"]
-            return { ...ev, date: d, time: (t ?? "00:00").slice(0,5) }
+            // Handle date - provide default if missing
+            const dateStr = ev.date || ""
+            const [d, t] = dateStr.includes("T")
+              ? dateStr.split("T")
+              : [dateStr || "1970-01-01", "00:00"]
+            return { 
+              ...ev, 
+              date: d || "1970-01-01", 
+              time: (t ?? "00:00").slice(0,5),
+              category: ev.category || "Event",
+              location: ev.location || "TBD",
+              format: ev.format || "In-Person"
+            }
           })
           .filter((ev): ev is WicEvent =>
             Boolean(
             ev.id &&
             ev.title &&
-            ev.date &&
-            ev.category &&
-            ev.location &&
-            ev.format &&
             validStatuses.includes((ev.status ?? "").toLowerCase())
             )
           )
-          .sort((a, b) =>
-            new Date(`${a.date}T${a.time}:00`).getTime()
-            - new Date(`${b.date}T${b.time}:00`).getTime()
-          )
-        setUpcomingEvents(evs.slice(0, 3))
+          .sort((a, b) => {
+            // Sort by date if available, otherwise keep original order
+            const dateA = a.date && a.date !== "1970-01-01" 
+              ? new Date(`${a.date}T${a.time}:00`).getTime() 
+              : Number.MAX_SAFE_INTEGER
+            const dateB = b.date && b.date !== "1970-01-01"
+              ? new Date(`${b.date}T${b.time}:00`).getTime()
+              : Number.MAX_SAFE_INTEGER
+            return dateA - dateB
+          })
+        setUpcomingEvents(evs.slice(0, 6))
       } catch (error) {
         console.error("Error fetching events:", error)
       }
@@ -210,7 +221,7 @@ export default function HomePage() {
                 <Button variant="outline">View All Events</Button>
               </Link>
             </div>
-            <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
               {upcomingEvents.map(event => {
                 const eventDate = new Date(`${event.date}T${event.time}:00`)
                 const formattedDate = eventDate.toLocaleDateString("en-US", { month: "short", day: "numeric" })
