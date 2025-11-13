@@ -1,5 +1,7 @@
-import Image from "next/image"
+"use client"
+
 import Link from "next/link"
+import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -155,18 +157,36 @@ export default function ExecBoardPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {execBoard.map((member) => (
+          {execBoard.map((member) => {
+            const MemberImage = () => {
+              const [imgSrc, setImgSrc] = useState(member.imageUrl || "/placeholder.svg");
+              const [hasError, setHasError] = useState(false);
+
+              const handleError = () => {
+                if (!hasError) {
+                  setHasError(true);
+                  setImgSrc("/placeholder.svg");
+                }
+              };
+
+              return (
+                <img
+                  src={hasError ? "/placeholder.svg" : imgSrc}
+                  alt={`${member.name} profile photo`}
+                  width={200}
+                  height={200}
+                  className="rounded-full object-cover border-4 border-purple-100 w-[200px] h-[200px]"
+                  onError={handleError}
+                />
+              );
+            };
+
+            return (
             <Card key={member.id} className="overflow-hidden hover:shadow-lg transition-shadow">
               <CardHeader className="text-center pb-4">
                 <div className="flex justify-center mb-4">
                   <div className="relative">
-                    <Image
-                      src={member.imageUrl || "/placeholder.svg"}
-                      alt={`${member.name} profile photo`}
-                      width={200}
-                      height={200}
-                      className="rounded-full object-cover border-4 border-purple-100"
-                    />
+                    <MemberImage />
                   </div>
                 </div>
                 <CardTitle className="text-xl">{member.name}</CardTitle>
@@ -204,7 +224,8 @@ export default function ExecBoardPage() {
                 </div>
               </CardContent>
             </Card>
-          ))}
+            );
+          })}
         </div>
 
         {/* Join the Team Section */}
