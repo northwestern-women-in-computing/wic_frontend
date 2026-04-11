@@ -55,7 +55,7 @@ export default function CalendarPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchEvents() {
+   /*async function fetchEvents() {
       try {
         const res = await fetch(API_ENDPOINTS.events);
         if (!res.ok) throw new Error("Failed to fetch events");
@@ -116,7 +116,7 @@ export default function CalendarPage() {
         setLoading(false);
       }
     }
-    fetchEvents();
+    fetchEvents();*/
   }, []);
 
   // Separate events into upcoming and past
@@ -170,7 +170,7 @@ export default function CalendarPage() {
     return { upcomingEvents: upcoming, pastEvents: past };
   }, [events]);
 
-  if (loading)
+  /*if (loading)
     return (
       <div className="min-h-screen flex items-center justify-center">
         Loading events...
@@ -181,7 +181,7 @@ export default function CalendarPage() {
       <div className="min-h-screen flex items-center justify-center text-red-500">
         {error}
       </div>
-    );
+    );*/
 
   return (
     <div className="min-h-screen bg-muted/50 py-8">
@@ -194,7 +194,14 @@ export default function CalendarPage() {
           </p>
         </div>
 
+        <div className="flex flex-col items-center justify-center py-20 bg-white rounded-xl border-2 border-dashed border-muted-foreground/20">
+          <h2 className="text-2xl font-semibold text-foreground">Calendar coming soon!</h2>
+          <p className="text-muted-foreground mt-2">We are currently finalizing our event schedule. Check back later!</p>
+        </div>
+
+        
         {/* Upcoming Events Section */}
+        {/*
         <div className="mb-12">
           <h2 className="text-2xl font-semibold mb-4">Upcoming Events</h2>
           {upcomingEvents.length > 0 ? (
@@ -291,9 +298,10 @@ export default function CalendarPage() {
               </p>
             </div>
           )}
-        </div>
+        </div>*/}
 
         {/* Past Events Section */}
+        {/*
         {pastEvents.length > 0 && (
           <div className="mb-12">
             <h2 className="text-2xl font-semibold mb-4">Past Events</h2>
@@ -409,7 +417,7 @@ export default function CalendarPage() {
               ))}
             </div>
           </CardContent>
-        </Card>
+        </Card>*/}
       </div>
     </div>
   );

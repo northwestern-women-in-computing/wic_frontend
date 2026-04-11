@@ -8,18 +8,18 @@ import { ExternalLink } from "lucide-react"
 // Mock sponsors data - in real app, this would come from your database
 const sponsors =
     [
-        {
+       /*{
             id: 1,
             name: "Google",
             logoUrl: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
             websiteUrl: "https://google.com",
             tier: "Silver",
             description: "Multinational technology company.",
-        },
+        },*/
         {
             id: 2,
             name: "Accenture",
-            logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Accenture.svg/326px-Accenture.svg.png?20241209170218",
+            logoUrl: "https://upload.wikimedia.org/wikipedia/commons/c/cd/Accenture.svg",
             websiteUrl: "https://accenture.com",
             tier: "Silver",
             description: "Leading technology consulting company.",
@@ -27,19 +27,19 @@ const sponsors =
         {
             id: 3,
             name: "IMC",
-            logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/IMC_Logo.svg/356px-IMC_Logo.svg.png?20190413011724",
+            logoUrl: "https://upload.wikimedia.org/wikipedia/commons/1/17/IMC_Logo.svg",
             websiteUrl: "https://imc.com",
             tier: "Silver",
             description: "Global market maker.",
         },
-        {
+        /*{
             id: 4,
             name: "CDW",
             logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/CDW_Logo.svg/1599px-CDW_Logo.svg.png?20161105232554",
             websiteUrl: "https://cdw.com",
             tier: "Silver",
             description: "Technology solutions provider.",
-        },
+        },*/
         {
             id: 5,
             name: "Jane Street",
@@ -48,7 +48,7 @@ const sponsors =
             tier: "Bronze",
             description: "Quantitative trading firm.",
         },
-        {
+        /*{
             id: 6,
             name: "DE Shaw & Co",
             logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/D._E._Shaw_%26_Co._Logo.svg/1024px-D._E._Shaw_%26_Co._Logo.svg.png?20240819123328",
@@ -63,7 +63,7 @@ const sponsors =
             websiteUrl: "https://duolingo.com",
             tier: "Bronze",
             description: "Powering people all over the world with language learning and education services.",
-        }
+        }*/
 ]
 
 const tierColors = {

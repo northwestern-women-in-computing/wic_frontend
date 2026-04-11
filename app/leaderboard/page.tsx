@@ -18,6 +18,7 @@ export default function LeaderboardPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    /*
     async function fetchLeaderboard() {
       try {
         const res = await fetch(API_ENDPOINTS.leaderboard);
@@ -46,15 +47,16 @@ export default function LeaderboardPage() {
       }
     }
     fetchLeaderboard();
+    */
   }, []);
 
-  if (loading) {
+  /*if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         Loading leaderboard...
       </div>
     );
-  }
+  }*/
 
   if (error) {
     return (
@@ -67,7 +69,15 @@ export default function LeaderboardPage() {
   return (
     <div className="min-h-screen bg-muted/50 py-8">
       <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold mb-6">Leaderboard</h1>
+        {/*<h1 className="text-3xl font-bold mb-6">Leaderboard</h1>*/}
+
+        <Card className="p-12 border-dashed border-2 flex flex-col items-center justify-center text-center">
+           <h2 className="text-2xl font-semibold text-muted-foreground">
+             Leaderboard coming soon!
+           </h2>
+        </Card>
+
+        {/*
         <div className="space-y-4">
           {users.map((user, index: number) => (
             <Card key={user.id} className="overflow-hidden">
@@ -82,6 +92,7 @@ export default function LeaderboardPage() {
             </Card>
           ))}
         </div>
+        */}
       </div>
     </div>
   );
