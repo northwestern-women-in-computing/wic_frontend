@@ -1,21 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { useEffect } from "react";
+//import { useEffect, useState } from "react";
+import { Card } from "@/components/ui/card";
+//import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+//import { Badge } from "@/components/ui/badge";
 
-import { API_ENDPOINTS } from "@/lib/api-config";
+//import { API_ENDPOINTS } from "@/lib/api-config";
 
-type LeaderboardUser = {
+/*type LeaderboardUser = {
   id: string | number
   name: string
   points: number
-}
+}*/
 
 export default function LeaderboardPage() {
-  const [users, setUsers] = useState<LeaderboardUser[]>([]);
+  /*const [users, setUsers] = useState<LeaderboardUser[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);*/
 
   useEffect(() => {
     /*
@@ -58,13 +60,13 @@ export default function LeaderboardPage() {
     );
   }*/
 
-  if (error) {
+  /*if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center text-red-500">
         {error}
       </div>
     );
-  }
+  }*/
 
   return (
     <div className="min-h-screen bg-muted/50 py-8">

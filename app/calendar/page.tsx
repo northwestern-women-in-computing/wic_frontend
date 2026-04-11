@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useEffect, useState, useMemo } from "react";
-import {
+import { useEffect } from "react";
+//import { useEffect, useState, useMemo } from "react";
+/*import {
   Card,
   CardContent,
   CardDescription,
@@ -11,19 +12,19 @@ import {
 import { API_ENDPOINTS } from "@/lib/api-config";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, Clock, MapPin, Users } from "lucide-react";
+import { Calendar, Clock, MapPin, Users } from "lucide-react";*/
 
 // Category color mapping
-const categoryColors: Record<string, string> = {
+/*const categoryColors: Record<string, string> = {
   "Tech Talk": "bg-blue-100 text-blue-800",
   Workshop: "bg-green-100 text-green-800",
   Networking: "bg-purple-100 text-purple-800",
   Hackathon: "bg-red-100 text-red-800",
   Career: "bg-yellow-100 text-yellow-800",
   Panel: "bg-indigo-100 text-indigo-800",
-};
+};*/
 
-function formatDate(dateString: string) {
+/*function formatDate(dateString: string) {
   const [datePart] = dateString.split("T");
   const [year, month, day] = datePart.split("-").map(Number);
   const date = new Date(year, month - 1, day);
@@ -33,9 +34,9 @@ function formatDate(dateString: string) {
     month: "long",
     day: "numeric",
   });
-}
+}*/
 
-function formatTime(dateTimeOrTime?: string) {
+/*function formatTime(dateTimeOrTime?: string) {
   if (!dateTimeOrTime) return "";
   const isoString = dateTimeOrTime.includes("T")
     ? dateTimeOrTime
@@ -47,12 +48,12 @@ function formatTime(dateTimeOrTime?: string) {
     minute: "2-digit",
     hour12: true,
   });
-}
+}*/
 
 export default function CalendarPage() {
-  const [events, setEvents] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  //const [events, setEvents] = useState<any[]>([]);
+  /*const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);*/
 
   useEffect(() => {
    /*async function fetchEvents() {
@@ -120,7 +121,7 @@ export default function CalendarPage() {
   }, []);
 
   // Separate events into upcoming and past
-  const { upcomingEvents, pastEvents } = useMemo(() => {
+  /*const { upcomingEvents, pastEvents } = useMemo(() => {
     const now = new Date();
     now.setHours(0, 0, 0, 0); // Set to start of today for comparison
     
@@ -168,7 +169,7 @@ export default function CalendarPage() {
     });
     
     return { upcomingEvents: upcoming, pastEvents: past };
-  }, [events]);
+  }, [events]);*/
 
   /*if (loading)
     return (
