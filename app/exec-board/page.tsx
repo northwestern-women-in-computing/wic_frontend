@@ -37,7 +37,7 @@ const execBoard = [
         name: "Grace He",
         position: "Treasurer",
         bio: "Grace studies Computer Science & Economics at Northwestern, overseeing WiC’s finances, ensuring fiscal responsibility for events and initiatives.",
-        imageUrl: "/grace.png",
+        imageUrl: "/grace.jpeg",
         email: "gracehe2027@northwestern.edu",
         linkedinUrl: "https://www.linkedin.com/in/grace-he-915983225",
         year: "Junior",
