@@ -133,7 +133,7 @@ const execBoard = [
         name: "Maha Somji",
         position: "Membership Director",
         bio: "Maha oversees member recruitment and retention. She strives to create an inclusive environment for all WiC members.",
-        imageUrl: "/maha.png",
+        imageUrl: "/maha.jpg",
         email: "mahnumsomji2028@u.northwestern.edu",
         //linkedinUrl: "https://www.linkedin.com/in/sofia-flores-202704nu/",
         year: "Sophomore",
