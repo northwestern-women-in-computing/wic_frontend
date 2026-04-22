@@ -14,16 +14,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, MapPin, Users } from "lucide-react";
 
-// Category color mapping
-const categoryColors: Record<string, string> = {
-  "Tech Talk": "bg-blue-100 text-blue-800",
-  Workshop: "bg-green-100 text-green-800",
-  Networking: "bg-purple-100 text-purple-800",
-  Hackathon: "bg-red-100 text-red-800",
-  Career: "bg-yellow-100 text-yellow-800",
-  Panel: "bg-indigo-100 text-indigo-800",
-};
-
 function formatDate(dateString: string) {
   if (!dateString || dateString === "1970-01-01") return "TBD";
 
