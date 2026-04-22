@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useEffect } from "react";
-//import { useEffect, useState, useMemo } from "react";
-/*import {
+//import { useEffect } from "react";
+import { useEffect, useState, useMemo } from "react";
+import {
   Card,
   CardContent,
   CardDescription,
@@ -12,103 +12,105 @@ import { useEffect } from "react";
 import { API_ENDPOINTS } from "@/lib/api-config";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, Clock, MapPin, Users } from "lucide-react";*/
+import { Calendar, Clock, MapPin, Users } from "lucide-react";
 
 // Category color mapping
-/*const categoryColors: Record<string, string> = {
+const categoryColors: Record<string, string> = {
   "Tech Talk": "bg-blue-100 text-blue-800",
   Workshop: "bg-green-100 text-green-800",
   Networking: "bg-purple-100 text-purple-800",
   Hackathon: "bg-red-100 text-red-800",
   Career: "bg-yellow-100 text-yellow-800",
   Panel: "bg-indigo-100 text-indigo-800",
-};*/
+};
 
-/*function formatDate(dateString: string) {
-  const [datePart] = dateString.split("T");
-  const [year, month, day] = datePart.split("-").map(Number);
-  const date = new Date(year, month - 1, day);
+function formatDate(dateString: string) {
+  if (!dateString || dateString === "1970-01-01") return "TBD";
+
+  let date = new Date(dateString);
+
+  if (isNaN(date.getTime()) && dateString.includes('/')) {
+    const [month, day, year] = dateString.split('/').map(Number);
+    date = new Date(year, month - 1, day);
+  }
+
+  if (isNaN(date.getTime())) {
+    return dateString;
+  }
+
   return date.toLocaleDateString("en-US", {
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
   });
-}*/
+}
 
-/*function formatTime(dateTimeOrTime?: string) {
+function formatTime(dateTimeOrTime?: string) {
   if (!dateTimeOrTime) return "";
+
+  if (dateTimeOrTime.includes("AM") || dateTimeOrTime.includes("PM")) {
+    return dateTimeOrTime;
+  }
+
   const isoString = dateTimeOrTime.includes("T")
     ? dateTimeOrTime
     : `1970-01-01T${dateTimeOrTime}:00`;
+    
   const date = new Date(isoString);
-  if (isNaN(date.getTime())) return "";
+  if (isNaN(date.getTime())) return dateTimeOrTime;
+
   return date.toLocaleTimeString("en-US", {
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
   });
-}*/
+}
 
 export default function CalendarPage() {
-  //const [events, setEvents] = useState<any[]>([]);
-  /*const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);*/
+  const [events, setEvents] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-   /*async function fetchEvents() {
+useEffect(() => {
+    async function fetchEvents() {
       try {
         const res = await fetch(API_ENDPOINTS.events);
         if (!res.ok) throw new Error("Failed to fetch events");
         const data = await res.json();
-        // console.log("📡 Backend response:", data);
 
-        const processed = data.map((ev: any) => {
-          let dateOnly = ev.date;
-          let timeOnly = ev.time ?? "";
-          const status = ev.status ?? "";
-          // console.log(ev.status);
-
-          if (
-            !timeOnly &&
-            typeof ev.date === "string" &&
-            ev.date.includes("T")
-          ) {
-            const [d, t] = ev.date.split("T");
-            dateOnly = d;
-            timeOnly = t.split(".")[0].slice(0, 5);
-          }
+        const processed = data.map((ev: any, index: number) => {
+          // Normalize the data from Google Sheets CSV
+          const title = ev.title || ev.Event || "Untitled Event";
+          const status = (ev.status || "").toLowerCase();
+          
+          // Ensure we have a unique ID for the 'key' prop
+          const id = ev.id || `event-${index}`;
 
           return {
             ...ev,
-            date: dateOnly,
-            time: timeOnly,
-            status: status.toLowerCase(),
+            id,
+            title,
+            status,
+            date: ev.date || "1970-01-01",
+            time: ev.time || "00:00",
           };
         });
 
-        // Filter out any events missing required fields or with unwanted status
+        // Updated status list to include 'confirmed' (common in Google Sheets)
         const validStatuses = [
           "done",
           "cancelled",
           "registration open",
           "confirmed",
+          "live"
         ];
-        const filteredEvents = processed
-          .map((ev: any) => ({
-            ...ev,
-            category: ev.category || "Event",
-            location: ev.location || "TBD",
-            format: ev.format || "In-Person",
-            date: ev.date || "1970-01-01",
-            time: ev.time || "00:00"
-          }))
-          .filter(
-            (ev: any) =>
-              ev.id &&
-              ev.title &&
-              validStatuses.includes(ev.status)
-          );
+
+        const filteredEvents = processed.filter(
+          (ev: any) =>
+            ev.title && 
+            (validStatuses.includes(ev.status) || ev.status === "")
+        );
 
         setEvents(filteredEvents);
       } catch (err: any) {
@@ -117,61 +119,52 @@ export default function CalendarPage() {
         setLoading(false);
       }
     }
-    fetchEvents();*/
+    fetchEvents();
   }, []);
 
   // Separate events into upcoming and past
-  /*const { upcomingEvents, pastEvents } = useMemo(() => {
+  const { upcomingEvents, pastEvents } = useMemo(() => {
     const now = new Date();
-    now.setHours(0, 0, 0, 0); // Set to start of today for comparison
+    now.setHours(0, 0, 0, 0); // Start of today
     
     const upcoming: any[] = [];
     const past: any[] = [];
     
     events.forEach((event) => {
-      const eventDate = event.date && event.date !== "1970-01-01" 
-        ? new Date(`${event.date}T${event.time ?? "00:00"}:00`)
-        : null;
+      let eventDate: Date | null = null;
+
+      if (event.date && event.date !== "1970-01-01") {
+        // Handle "4/15/2026" or "2026-04-15"
+        if (event.date.includes('/')) {
+          const [m, d, y] = event.date.split('/').map(Number);
+          eventDate = new Date(y, m - 1, d);
+        } else {
+          eventDate = new Date(event.date);
+        }
+      }
       
       if (eventDate && !isNaN(eventDate.getTime())) {
         eventDate.setHours(0, 0, 0, 0);
+        // Comparison logic
         if (eventDate >= now) {
           upcoming.push(event);
         } else {
           past.push(event);
         }
       } else {
-        // Events without valid dates go to upcoming (assume they're future)
+        // If date is totally missing or invalid, assume it's a TBD future event
         upcoming.push(event);
       }
     });
     
-    // Sort upcoming events ascending (earliest first)
-    upcoming.sort((a, b) => {
-      const da = a.date && a.date !== "1970-01-01"
-        ? new Date(`${a.date}T${a.time ?? "00:00"}:00`).getTime()
-        : Number.MAX_SAFE_INTEGER;
-      const db = b.date && b.date !== "1970-01-01"
-        ? new Date(`${b.date}T${b.time ?? "00:00"}:00`).getTime()
-        : Number.MAX_SAFE_INTEGER;
-      return da - db;
-    });
-    
-    // Sort past events descending (most recent first)
-    past.sort((a, b) => {
-      const da = a.date && a.date !== "1970-01-01"
-        ? new Date(`${a.date}T${a.time ?? "00:00"}:00`).getTime()
-        : 0;
-      const db = b.date && b.date !== "1970-01-01"
-        ? new Date(`${b.date}T${b.time ?? "00:00"}:00`).getTime()
-        : 0;
-      return db - da; // Descending for past events
-    });
+    // Sort logic remains the same (Upcoming = soonest first, Past = newest first)
+    upcoming.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    past.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     
     return { upcomingEvents: upcoming, pastEvents: past };
-  }, [events]);*/
+  }, [events]);
 
-  /*if (loading)
+  if (loading)
     return (
       <div className="min-h-screen flex items-center justify-center">
         Loading events...
@@ -182,7 +175,7 @@ export default function CalendarPage() {
       <div className="min-h-screen flex items-center justify-center text-red-500">
         {error}
       </div>
-    );*/
+    );
 
   return (
     <div className="min-h-screen bg-muted/50 py-8">
@@ -190,19 +183,14 @@ export default function CalendarPage() {
         <div className="mb-6">
           <h1 className="text-3xl font-bold">Events Calendar</h1>
           <p className="text-muted-foreground mt-2">
-            Discover upcoming events and workshops. Earn points and climb the
+            Discover upcoming events and workshops. Earn points and check your status on the
             leaderboard!
           </p>
         </div>
 
-        <div className="flex flex-col items-center justify-center py-20 bg-white rounded-xl border-2 border-dashed border-muted-foreground/20">
-          <h2 className="text-2xl font-semibold text-foreground">Calendar coming soon!</h2>
-          <p className="text-muted-foreground mt-2">We are currently finalizing our event schedule. Check back later!</p>
-        </div>
-
         
         {/* Upcoming Events Section */}
-        {/*
+
         <div className="mb-12">
           <h2 className="text-2xl font-semibold mb-4">Upcoming Events</h2>
           {upcomingEvents.length > 0 ? (
@@ -213,27 +201,11 @@ export default function CalendarPage() {
                 <div className="flex items-start justify-between">
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2">
-                      <Badge
-                        className={`bg-${event.categoryColor}-100 text-${event.categoryColor}-800`}
-                        variant="secondary"
-                      >
-                      {event.category}
-                      </Badge>
-                      {event.format && event.format !== "0" && event.format !== 0 && String(event.format).trim() && (
-                        <Badge variant="secondary">{event.format}</Badge>
-                      )}
+            
                       {event.points > 0 && (
-                        <Badge variant="outline">{event.points} points</Badge>
+                        <Badge variant="outline">{event.points} point</Badge>
                       )}
-                      {event.status && (
-                        <Badge
-                          className={`bg-${event.statusColor}-100 text-${event.statusColor}-800`}
-                          variant="secondary"
-                        >
-                          {event.status.charAt(0).toUpperCase() +
-                            event.status.slice(1)}
-                        </Badge>
-                      )}
+                      
                     </div>
                     <CardTitle className="text-xl">{event.title}</CardTitle>
                   </div>
@@ -262,9 +234,7 @@ export default function CalendarPage() {
                   <div className="flex items-center space-x-2">
                     <Clock className="h-4 w-4 text-muted-foreground" />
                     <span>
-                      {formatTime(
-                        event.date + "T" + (event.time ?? "00:00") + ":00"
-                      )}
+                      {formatTime(event.time)}
                     </span>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -299,10 +269,10 @@ export default function CalendarPage() {
               </p>
             </div>
           )}
-        </div>*/}
+        </div>
 
         {/* Past Events Section */}
-        {/*
+
         {pastEvents.length > 0 && (
           <div className="mb-12">
             <h2 className="text-2xl font-semibold mb-4">Past Events</h2>
@@ -313,26 +283,8 @@ export default function CalendarPage() {
                     <div className="flex items-start justify-between">
                       <div className="space-y-2">
                         <div className="flex items-center space-x-2">
-                          <Badge
-                            className={`bg-${event.categoryColor}-100 text-${event.categoryColor}-800`}
-                            variant="secondary"
-                          >
-                          {event.category}
-                          </Badge>
-                          {event.format && event.format !== "0" && event.format !== 0 && String(event.format).trim() && (
-                            <Badge variant="secondary">{event.format}</Badge>
-                          )}
                           {event.points > 0 && (
-                            <Badge variant="outline">{event.points} points</Badge>
-                          )}
-                          {event.status && (
-                            <Badge
-                              className={`bg-${event.statusColor}-100 text-${event.statusColor}-800`}
-                              variant="secondary"
-                            >
-                              {event.status.charAt(0).toUpperCase() +
-                                event.status.slice(1)}
-                            </Badge>
+                            <Badge variant="outline">{event.points} point</Badge>
                           )}
                         </div>
                         <CardTitle className="text-xl">{event.title}</CardTitle>
@@ -362,9 +314,7 @@ export default function CalendarPage() {
                       <div className="flex items-center space-x-2">
                         <Clock className="h-4 w-4 text-muted-foreground" />
                         <span>
-                          {formatTime(
-                            event.date + "T" + (event.time ?? "00:00") + ":00"
-                          )}
+                          {formatTime(event.time)}
                         </span>
                       </div>
                       <div className="flex items-center space-x-2">
@@ -398,7 +348,7 @@ export default function CalendarPage() {
           </div>
         )}
 
-        <Card className="mt-8">
+        {/* <Card className="mt-8">
           <CardHeader>
             <CardTitle>Event Categories</CardTitle>
             <CardDescription>
@@ -418,7 +368,7 @@ export default function CalendarPage() {
               ))}
             </div>
           </CardContent>
-        </Card>*/}
+        </Card> */}
       </div>
     </div>
   );
